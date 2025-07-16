@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Borrowed Book Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Sriracha&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000;
+            padding: 15px 20px;
+        }
+
+        .header .logo {
+            font-size: 25px;
+            font-family: 'Sriracha', cursive;
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 30px;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .nav-items a {
+            text-decoration: none;
+            color: #ddd;
+            padding: 15px 20px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-items a:hover {
+            color: #fff;
+        }
+
+        .nav-items a.active {
+            border-bottom: 2px solid #fff;
+            padding-bottom: 13px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #eee;
+        }
+
+        .labels-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1.5fr 1.5fr 1fr 1fr;
+            /* Adjust columns as needed */
+            background-color: #333;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .labels-container p {
+            padding: 8px 12px;
+            margin: 5px;
+            border-radius: 6px;
+            box-sizing: border-box;
+            text-align: center;
+            font-weight: bold;
+            color: #ddd;
+        }
+
+        .borrow-entry {
+            background-color: #333;
+            color: #eee;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1.5fr 1.5fr 1fr 1fr;
+            /* Match labels-container */
+            align-items: center;
+        }
+
+        .borrow-entry p {
+            padding: 8px 12px;
+            margin: 5px;
+            border-radius: 6px;
+            box-sizing: border-box;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .return-form {
+            text-align: center;
+        }
+
+        .return-button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .return-button:hover {
+            background-color: #4cae4c;
+        }
+
+        .header .admin-button {
+            background-color: grey;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .header .logout-button {
+            background-color: red;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .header .admin-button:hover,
+        .header .logout-button:hover {
+            background-color: #555;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #search-input {
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333;
+            color: #ddd;
+            width: 100%;
+            box-sizing: border-box;
+            padding-right: 50px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        #search-button {
+            position: absolute;
+            right: 0px;
+            top: 0;
+            height: 100%;
+            padding: 10px 15px;
+            background-color: grey;
+            color: #fff;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #search-button:hover {
+            background-color: #555;
+        }
+
+        .hidden-borrow {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a href="{% if not request.path == '/' %}{% url 'home' %}{% endif %}" class="logo">Kingston Library</a>
+        <nav class="nav-items">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'books' %}">Books</a>
+            {% if request.session.admin_logged_in %}
+            <a href="{% url 'bookentry' %}">Book Entry</a>
+            <a href="{% url 'borrowed' %}">Borrowed</a>
+            <a href="{% url 'admin_logout' %}" class="logout-button">Logout</a>
+            {% else %}
+            <a href="{% url 'admin' %}">Admin Login</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <h1>Borrowed Book Details</h1>
+
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search borrower names..."
+                    onkeyup="searchBorrows()">
+                <button id="search-button"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="labels-container">
+                <p>Borrower</p>
+                <p>Book</p>
+                <p>Copies</p>
+                <p>Date Borrowed</p>
+                <p>Remaining Days</p>
+                <p>Fine</p>
+                <p></p>
+            </div>
+
+            {% for borrow in borrows %}
+            <div class="borrow-entry">
+                <p>{{ borrow.name }}</p>
+                <p>{{ borrow.book_name }}</p>
+                <p>{{ borrow.copies }}</p>
+                <p>{{ borrow.date_borrowed }}</p>
+                <p>{{ borrow.remaining_days }}</p>
+                <p>{{ borrow.fine }}</p>
+                <form class="return-form" method="post" action="{% url 'return_book' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="borrow_id" value="{{ borrow.id }}">
+                    <button type="submit" class="return-button">Returned</button>
+                </form>
+            </div>
+            {% empty %}
+            <p>No books have been borrowed yet.</p>
+            {% endfor %}
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var currentPage = window.location.pathname;
+            var navItems = document.querySelectorAll('.nav-items a');
+            navItems.forEach(function (item) {
+                if (item.getAttribute('href') === currentPage) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        function searchBorrows() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const borrowEntries = document.querySelectorAll('.borrow-entry');
+
+            borrowEntries.forEach(entry => {
+                const borrowerName = entry.querySelector('p:nth-child(1)').textContent.toLowerCase();
+                if (borrowerName.includes(searchInput)) {
+                    entry.classList.remove('hidden-borrow');
+                } else {
+                    entry.classList.add('hidden-borrow');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Kingston Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Sriracha&display=swap" rel="stylesheet">
+    <style>
+      /* Add some basic styles */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #000000; /* Black background */
+        color: #ffffff; /* Default text color to white */
+        font-family: 'Montserrat', sans-serif; /* Global font */
+        min-height: 100vh; /* Ensure full viewport height */
+        display: flex;
+        flex-direction: column;
+      }
+      .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000; /* Black header background */
+            padding: 15px 20px;
+        }
+
+        .header .logo {
+            font-size: 25px;
+            font-family: 'Sriracha', cursive; /* Logo font */
+            color: #ffffff; /* White logo color */
+            text-decoration: none;
+            margin-left: 30px;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .nav-items a {
+            text-decoration: none;
+            color: #ddd; /* Lighter text color for nav items */
+            padding: 15px 20px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-items a:hover {
+            color: #fff; /* White on hover */
+        }
+
+         .nav-items a.active {
+            border-bottom: 2px solid #fff; /* Add a white underline */
+            padding-bottom: 13px; /* Adjust padding to align underline */
+        }
+
+        .header .logout-button {
+    background-color: red; /* Change background color to red */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 20px;
+  }
+        .header .admin-button {
+            background-color: grey; /* Dark grey button */
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .header .logout-button:hover,
+        .header .admin-button:hover {
+            background-color: #555; /* Slightly lighter on hover */
+        }
+      header {
+        background-color: #6b8196;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+      .container {
+        max-width: 9000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #1a1a1a; /* Darker background for container */
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      h1, h2 {
+          color: #eee; /* Lighter color for headings */
+      }
+      p {
+          color: #ddd; /* Lighter color for paragraphs */
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px auto;
+      }
+       /* CSS for footer */
+       .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333; /* Grey footer color */
+    padding: 15px 80px; /* Reduced padding for height */
+    min-height: 50px; /* Reduced height */
+    margin-top: auto; /* Push footer to bottom */
+    color: #ce8989;
+    text-align: center;
+}
+
+      .footer .copy {
+        color: #ce8989;
+      }
+
+       .social-links {
+            display: flex;
+            align-items: center; /* Vertically align */
+       }
+
+        .social-links a {
+            color: #a1a1a1;
+            padding: 5px 10px;
+            font-size: 24px; /* Larger icons */
+       }
+
+       .social-links a:hover {
+            color: #fff;
+       }
+    </style>
+  </head>
+  <body>
+  <header class="header">
+    <a href="{% if not request.path == '/' %}{% url 'home' %}{% endif %}" class="logo">Kingston Library</a>
+    <nav class="nav-items">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'books' %}">Books</a>
+        {% if request.session.admin_logged_in %}
+          <a href="{% url 'bookentry' %}">Book Entry</a>
+           <a href="{% url 'borrowed' %}">Borrowed</a>
+             <a href="{% url 'admin_logout' %}" class="logout-button">Logout</a>
+            {% else %}
+             <a href="{% url 'admin' %}" class="admin-button">Admin Login</a>
+        {% endif %}
+    </nav>
+  </header>
+    <div class="container">
+    <header>
+      <h1>About Kingston Library</h1>
+    </header>
+      <h2>Our Story</h2>
+      <p>Kingston Library has been serving the community since 2000. Our mission is to provide free access to information, education, and recreation for all members of the community.</p>
+      <h2>Our Collection</h2>
+      <p>Kingston Library has been serving the community since 2000. Our mission is to provide free access to information, education, and recreation for all members of the community.</p>
+      <h2>Our Programs</h2>
+      <p>We offer a variety of programs and events for all ages, including storytimes for children, book clubs for adults, and computer classes for seniors.</p>
+    </div>
+     <footer class="footer">
+            <div class="copy">© 2025 Kingston Library</div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+     </footer>
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the current page URL
+            var currentPage = window.location.pathname;
+
+            // Get all the nav items
+            var navItems = document.querySelectorAll('.nav-items a');
+
+            // Loop through the nav items and add the 'active' class to the one that matches the current page
+            navItems.forEach(function(item) {
+                // Check the href attribute against the current page URL
+                if (item.getAttribute('href') === currentPage) {
+                    item.classList.add('active');
+                }
+            });
+        });
+     </script>
+  </body>
+</html>

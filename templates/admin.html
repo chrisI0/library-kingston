@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Sriracha&display=swap" rel="stylesheet">
+    <style>
+         .header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              background-color: #000;
+              padding: 15px 20px;
+            }
+
+            .header .logo {
+              font-size: 25px;
+              font-family: 'Sriracha', cursive;
+              color: #ffffff;
+              text-decoration: none;
+              margin-left: 30px;
+            }
+
+            .nav-items {
+              display: flex;
+              justify-content: space-around;
+              align-items: center;
+              margin-right: 20px;
+            }
+
+            .nav-items a {
+              text-decoration: none;
+              color: #ddd;
+              padding: 15px 20px;
+              transition: color 0.3s ease;
+            }
+
+             .nav-items a:hover {
+               color: #fff;
+            }
+          body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 0;
+              background-color: #000000; /* Black background */
+              color: #ffffff; /* Default text color to white */
+              font-family: 'Montserrat', sans-serif; /* Global font */
+              min-height: 100vh; /* Ensure full viewport height */
+              display: flex;
+              flex-direction: column;
+          }
+          .main-content{
+             display: flex;
+              justify-content: center;
+              align-items: center;
+              min-height: 80vh;
+         }
+          form {
+              background-color: #1a1a1a; /* Darker background for form */
+              padding: 30px;
+              border-radius: 5px;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker shadow */
+              width: 300px; /* Adjust width as needed */
+              color: #ddd; /* Lighter text color */
+          }
+          label {
+              display: block;
+              margin-bottom: 10px;
+              color: #eee; /* Even lighter label color */
+          }
+          input[type="text"],
+          input[type="password"] {
+              width: 100%;
+              padding: 10px;
+              margin-bottom: 15px;
+              border: 1px solid #555; /* Darker border */
+              border-radius: 3px;
+              box-sizing: border-box;
+              background-color: #333; /* Darker input background */
+              color: #ddd; /* Lighter input text color */
+          }
+          button[type="submit"] {
+              background-color: grey; /* Admin button */
+              color: #fff;
+              padding: 12px 20px;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+              transition: background-color 0.3s ease;
+              text-align: center; /* Correct text alignment */
+              width: 100%; /* Make the button wider */
+              display: block; /* Center the button using margin auto */
+              margin: 10px auto;
+          }
+           button[type="submit"]:hover {
+              background-color: #555; /* Slightly lighter on hover */
+          }
+             /* Pop-up Styling */
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0,0,0,0.4);
+            }
+
+            .modal-content {
+    background-color: #333; /* Dark background */
+    color: #eee; /* Light text color */
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+}
+             .header .admin-button,  .header .logout-button {
+                    background-color: grey;
+                    color: #fff;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    margin-right: 20px;
+                }
+
+              .header .admin-button:hover, .header .logout-button:hover {
+                  background-color: #555;
+              }
+              h2 {
+                  color: #eee;
+                  text-align: center;
+              }
+        </style>
+    </head>
+    <body>
+        <header class="header">
+            <a href="#" class="logo">Kingston Library</a>
+            <nav class="nav-items">
+              <a href="{% url 'home' %}">Home</a>
+              <a href="{% url 'about' %}">About</a>
+              <a href="{% url 'books' %}">Books</a>
+               {% if request.session.admin_logged_in %}
+                  <a href="{% url 'bookentry' %}">Book Entry</a>
+                   <a href="{% url 'borrowed' %}">Borrowed</a>
+                     <a href="{% url 'admin_logout' %}" class="logout-button">Logout</a>
+                    {% else %}
+                     <a href="{% url 'admin' %}" class="admin-button">Admin Login</a>
+                {% endif %}
+            </nav>
+         </header>
+       <div class = "main-content">
+            <form method="POST">
+                {% csrf_token %}
+                <h2>Admin Login</h2>
+                 <!-- Pop-up -->
+                 <div id="messageModal" class="modal">
+                    <div class="modal-content">
+                         <span id="modalMessage"></span>
+                    </div>
+                 </div>
+                  <!-- Hidden message storage -->
+                {% if messages %}
+                   {% for message in messages %}
+                     <p id="hiddenMessage" style="display: none;">{{ message }}</p>
+                  {% endfor %}
+                {% endif %}
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" required placeholder="example@email.com">
+                <label for="pass1">Password:</label>
+                <input type="password" id="pass1" name="pass1" required>
+                <button type="submit">Login</button>
+            </form>
+       </div>
+        <script>
+           document.addEventListener('DOMContentLoaded', function() {
+             const modal = document.getElementById('messageModal');
+             const modalMessage = document.getElementById('modalMessage');
+             const hiddenMessage = document.getElementById('hiddenMessage');
+
+               if (hiddenMessage){
+                    modalMessage.textContent = hiddenMessage.textContent;
+                    modal.style.display = "block";
+                   setTimeout(function() {
+                    modal.style.display = "none";
+                  }, 2000);
+             }
+               window.onclick = function(event) {
+                   if (event.target == modal) {
+                     modal.style.display = "none";
+                   }
+                }
+            });
+        </script>
+    </body>
+    </html>

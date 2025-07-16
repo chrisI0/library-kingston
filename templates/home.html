@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library HomePage</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Sriracha&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sriracha&display=swap');
+
+    body {
+      margin: 0;
+      box-sizing: border-box;
+      background-color: #000000; /* Black background */
+      color: #ffffff; /* Default text color to white */
+      font-family: 'Montserrat', sans-serif; /* Global font */
+      min-height: 100vh; /* Ensure full viewport height */
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* CSS for header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #000; /* Black header background */
+      padding: 15px 20px;
+    }
+
+    .header .logo {
+      font-size: 25px;
+      font-family: 'Sriracha', cursive; /* Logo font */
+      color: #ffffff; /* White logo color */
+      text-decoration: none;
+      margin-left: 30px;
+    }
+
+    .nav-items {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    .nav-items a {
+      text-decoration: none;
+      color: #ddd; /* Lighter text color for nav items */
+      padding: 15px 20px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-items a:hover {
+      color: #fff; /* White on hover */
+    }
+
+    .header .logout-button {
+    background-color: red; /* Change background color to red */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 20px;
+  }
+    .header .admin-button {
+      background-color: grey; /* Dark grey button */
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .header .logout-button:hover,
+    .header .admin-button:hover {
+      background-color: #555; /* Slightly lighter on hover */
+    }
+
+    /* CSS for main element */
+    .intro {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 520px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("https://www.ft.com/__origami/service/image/v2/images/raw/https://d1e00ek4ebabms.cloudfront.net/production/44b8467e-ce82-4bb9-bc79-644ed2720d10.jpg?source=next&fit=scale-down&quality=highest&width=1440&dpr=1");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .intro h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 60px;
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .intro p {
+      font-size: 20px;
+      color: #d1d1d1;
+      text-transform: uppercase;
+      margin: 20px 0;
+    }
+
+    .intro button {
+      background-color: #5edaf0;
+      color: #000;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4)
+    }
+
+    .achievements {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 40px 80px;
+    }
+
+    .achievements .work {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 40px;
+    }
+
+    .achievements .work i {
+      width: fit-content;
+      font-size: 50px;
+      color: #dddddd;
+      border-radius: 50%;
+      border: 2px solid #dddddd;
+      padding: 12px;
+    }
+
+    .achievements .work .work-heading {
+      font-size: 20px;
+      color: #dddddd;
+      text-transform: uppercase;
+      margin: 10px 0;
+    }
+
+    .achievements .work .work-text {
+      font-size: 15px;
+      color: #999999;
+      margin: 10px 0;
+    }
+
+    .about-me {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 80px;
+      border-top: 2px solid #333333; /* Darker border */
+    }
+
+    .about-me img {
+      width: 500px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .about-me-text h2 {
+      font-size: 30px;
+      color: #dddddd;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .about-me-text p {
+      font-size: 15px;
+      color: #999999;
+      margin: 10px 0;
+    }
+
+    /* CSS for footer */
+    .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333; /* Grey footer color */
+    padding: 15px 80px; /* Reduced padding for height */
+    min-height: 50px; /* Reduced height */
+    margin-top: auto; /* Push footer to bottom */
+    color: #ce8989;
+    text-align: center;
+}
+
+    .footer .copy {
+      color: #ce8989;
+    }
+
+    .social-links {
+      display: flex;
+      align-items: center; /* Vertically align */
+    }
+
+    .social-links a {
+      color: #a1a1a1;
+      padding: 5px 10px;
+      font-size: 24px; /* Larger icons */
+    }
+
+    .social-links a:hover {
+      color: #fff;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <a href="#" class="logo">Kingston Library</a>
+    <nav class="nav-items">
+      <a href="#">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'books' %}">Books</a>
+      {% if request.session.admin_logged_in %}
+      <a href="{% url 'bookentry' %}">Book Entry</a>
+      <a href="{% url 'borrowed' %}">Borrowed</a>
+      <a href="{% url 'admin_logout' %}" class="logout-button">Logout</a>
+      {% else %}
+      <a href="{% url 'admin' %}" class="admin-button">Admin Login</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main>
+    <div class="intro">
+      <h1>Kingston Library</h1>
+      <p>Here you can get your favorite books.</p>
+    </div>
+
+  </main>
+  <footer class="footer">
+    <div class="copy">© 2025 Kingston Library</div>
+    <div class="social-links">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+</body>
+
+</html>

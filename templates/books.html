@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Available</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Sriracha&display=swap" rel="stylesheet">
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000;
+            padding: 15px 20px;
+        }
+
+        .header .logo {
+            font-size: 25px;
+            font-family: 'Sriracha', cursive;
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 30px;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .nav-items a {
+            text-decoration: none;
+            color: #ddd;
+            padding: 15px 20px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-items a.active {
+            border-bottom: 2px solid #fff;
+            padding-bottom: 13px;
+        }
+
+        .nav-items a:hover {
+            color: #fff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .books {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .book {
+         width: 250px;
+         height: 350px;
+         margin: 20px;
+         border: 1px solid #333;
+         border-radius: 5px;
+         padding: 10px;
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+         background-color: #1a1a1a;
+         font-family: 'Montserrat', sans-serif;
+        }
+
+        .book img {
+            display: none;
+        }
+
+        .book h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            margin: 0;
+            margin-top: 10px;
+            text-align: center;
+            color: #eee;
+        }
+
+        .book p {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            margin-top: 5px;
+            text-align: center;
+            color: #ddd;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+        }
+
+        input[type="submit"]:hover {
+            background-color: #666;
+            text-align: center;
+        }
+
+        /* Pop-up Styling */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #333; /* Dark background for the popup */
+            color: #eee; /* Light text color */
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .header .admin-button {
+            background-color: grey;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+ .header .logout-button {
+    background-color: red; /* Change background color to red */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 20px;
+  }
+
+        .header .admin-button:hover,
+        .header .logout-button:hover {
+            background-color: #555;
+        }
+
+        h1 {
+            color: #eee;
+            text-align: center;
+        }
+
+        /* CSS for footer */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 15px 80px;
+            min-height: 50px;
+            margin-top: auto;
+            color: #ce8989;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-links a {
+            color: #a1a1a1;
+            padding: 5px 10px;
+            font-size: 24px;
+        }
+
+        .social-links a:hover {
+            color: #fff;
+        }
+
+        /* Custom Styles for Borrow Button */
+        .borrow-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: grey;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: transform 0.1s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .borrow-button:hover {
+            background-color: #555;
+        }
+
+        .borrow-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+.out-of-copies {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #8B0000; /* Dark Red */
+            color: #fff;
+            border: none;
+            text-decoration: none;
+            text-align: center;
+            cursor: not-allowed;
+            opacity: 0.7;
+             border: none;
+        }
+/* width */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+/* Search Bar Styles */
+.search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #search-input {
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333;
+            color: #ddd;
+            width: 100%;
+            box-sizing: border-box;
+            padding-right: 50px; /* Increased padding for button */
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        #search-button {
+            position: absolute;
+            right: 0px; /* Align to the right edge */
+            top: 0;
+            height: 100%;
+            padding: 10px 15px;
+            background-color: grey;
+            color: #fff;
+            border: none;
+            border-radius: 0 5px 5px 0; /* Rounded right corners */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #search-button:hover {
+            background-color: #555;
+        }
+ .hidden-book {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="{% if not request.path == '/' %}{% url 'home' %}{% endif %}" class="logo">Kingston Library</a>
+        <nav class="nav-items">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'about' %}">About</a>
+          <a href="{% url 'books' %}">Books</a>
+          {% if request.session.admin_logged_in %}
+              <a href="{% url 'bookentry' %}">Book Entry</a>
+               <a href="{% url 'borrowed' %}">Borrowed</a>
+                 <a href="{% url 'admin_logout' %}" class="logout-button">Logout</a>
+              {% else %}
+               <a href="{% url 'admin' %}" class="admin-button">Admin Login</a>
+          {% endif %}
+        </nav>
+     </header>
+    <main>
+      <h1>Books Available</h1>
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search books..." onkeyup="searchBooks()">
+        <button id="search-button"><i class="fas fa-search"></i></button>
+    </div>
+      <div class="books">
+          {% for book in books %}
+          <div class="book" >
+              <img src="https://via.placeholder.com/150x200.png?text=Book+1" alt="Book 1">
+              <h2>{{ book.name }}</h2>
+              <p>Author: {{ book.author }}</p>
+              <p>Copies:{{ book.copies }}</p>
+              <p>Genre: {{ book.genre }}</p>
+              <p>Address: {{ book.shelf }}-{{ book.level }}-{{ book.column }}</p>
+              {% if book.copies > 0 %}
+                <a href="{% url 'borrow' %}?book_name={{ book.name }}" class="borrow-button">Borrow</a>
+              {% else %}
+               <span class="out-of-copies">Out of Copies</span>
+              {% endif %}
+          </div>
+          {% endfor %}
+      </div>
+          <div id="messageModal" class="modal">
+             <div class="modal-content">
+                 <span id="modalMessage"></span>
+             </div>
+           </div>
+         <!-- Hidden message storage -->
+          {% if messages %}
+              {% for message in messages %}
+                <p id="hiddenMessage" style="display: none;">{{ message }}</p>
+             {% endfor %}
+          {% endif %}
+    </main>
+   
+   <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the current page URL
+            var currentPage = window.location.pathname;
+
+            // Get all the nav items
+            var navItems = document.querySelectorAll('.nav-items a');
+
+            // Loop through the nav items and add the 'active' class to the one that matches the current page
+            navItems.forEach(function(item) {
+                // Check the href attribute against the current page URL
+                if (item.getAttribute('href') === currentPage) {
+                    item.classList.add('active');
+                }
+            });
+        });
+   
+ document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('messageModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const hiddenMessage = document.getElementById('hiddenMessage');
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        if (hiddenMessage){
+            modalMessage.textContent = hiddenMessage.textContent;
+            modal.style.display = "block";
+            setTimeout(function() {
+                modal.style.display = "none";
+            }, 2000);
+        }
+
+     });
+          function searchBooks() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const bookElements = document.querySelectorAll('.book');
+
+            bookElements.forEach(book => {
+                const bookName = book.querySelector('h2').textContent.toLowerCase();
+                const authorName = book.querySelector('p').textContent.toLowerCase();
+                if (searchInput.includes(" ")) {
+                    // If search includes space, search for matches anywhere
+                    if (bookName.includes(searchInput) || authorName.includes(searchInput)) {
+                        book.classList.remove('hidden-book'); // Show book
+                    } else {
+                        book.classList.add('hidden-book'); // Hide book
+                    }
+                } else {
+                    // If search starts with search Input
+                    if (bookName.startsWith(searchInput) || authorName.startsWith(searchInput)) {
+                        book.classList.remove('hidden-book'); // Show book
+                    } else {
+                        book.classList.add('hidden-book'); // Hide book
+                    }
+                }
+            });
+        }
+</script>
+   <footer class="footer">
+          <div class="copy">© 2025 Kingston Library</div>
+          <div class="social-links">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+   </footer>
+</body>
+</html>
